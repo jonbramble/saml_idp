@@ -30,7 +30,7 @@ module SamlIdp
 
     def should_validate_signature?
       attributes[:validate_signature] ||
-        current_metadata.respond_to?(:sign_assertions?) && current_metadata.sign_assertions?
+        current_metadata.respond_to?(:sign_requests?) && current_metadata.sign_requests?
     end
 
     def refresh_metadata
