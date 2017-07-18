@@ -22,9 +22,19 @@ module SamlIdp
         ds: signature_namespace,
         md: metadata_namespace
       ).first
-      doc ? !!doc["WantAssertionsSigned"] : false
+      doc ? ActiveModel::Type::Boolean.new.cast(doc.attributes["WantAssertionsSigned"].value) : false   
     end
     hashable :sign_assertions
+    
+    def sign_requests
+      doc = xpath(
+        "//md:SPSSODescriptor",
+        ds: signature_namespace,
+        md: metadata_namespace
+      ).first
+      doc ? ActiveModel::Type::Boolean.new.cast(doc.attributes["AuthnRequestsSigned"].value) : false   
+    end
+    hashable :sign_requests
 
     def display_name
       role_descriptor_document.present? ? role_descriptor_document["ServiceDisplayName"] : ""
